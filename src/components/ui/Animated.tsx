@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import type { ReactNode } from "react";
+import { Link } from "react-router";
 
 /* Viewport-triggered fade-up — use this around any section */
 export function FadeUp({
@@ -189,6 +190,13 @@ export function MagneticButton({
   );
 
   if (href) {
+    if (href.startsWith("/")) {
+      return (
+        <Link to={href} className={className} style={style}>
+          {Content}
+        </Link>
+      );
+    }
     return (
       <a href={href} className={className} style={style}>
         {Content}
