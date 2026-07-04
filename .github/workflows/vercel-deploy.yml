@@ -1,11 +1,11 @@
-name: Deploy to Vercel
+name: Build & Deploy to Vercel
 
 on:
   push:
     branches: [main]
 
 jobs:
-  vercel-deploy:
+  build-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,5 +32,11 @@ jobs:
         uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
           vercel-args: '--prod'
           working-directory: .
+
+      - name: Set custom domain (optional)
+        if: ${{ secrets.CUSTOM_DOMAIN != '' }}
+        run: npx vercel alias set ${{ secrets.CUSTOM_DOMAIN }} --token ${{ secrets.VERCEL_TOKEN }}
